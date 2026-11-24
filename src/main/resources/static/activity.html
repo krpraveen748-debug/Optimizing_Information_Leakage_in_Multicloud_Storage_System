@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Activity · CloudVault</title>
+  <link rel="stylesheet" href="/css/auth.css">
+  <script src="/js/auth.js" defer></script>
+</head>
+<body class="activity-page">
+  <header class="site-header">
+    <a class="brand" href="/main.html">CloudVault</a>
+    <nav class="user-nav" aria-label="Main navigation">
+      <a href="/main.html">Main</a>
+      <a href="/activity.html" aria-current="page">My Activity</a>
+      <span id="account-label" class="account-label"></span>
+      <button id="logout-button" class="nav-button" type="button">Sign out</button>
+    </nav>
+  </header>
+
+  <main class="main-workflow">
+    <section class="page-heading">
+      <p class="eyebrow">Account history</p>
+      <h1>My Activity</h1>
+      <p class="muted">Actual events recorded for your account. Search and filter the latest records.</p>
+    </section>
+    <p id="page-message" class="message" aria-live="polite"></p>
+
+    <section class="panel">
+      <div class="activity-toolbar">
+        <label for="activity-search">Search activity</label>
+        <input id="activity-search" type="search" placeholder="Filename, event or details" autocomplete="off">
+        <label for="activity-filter">Activity type</label>
+        <select id="activity-filter">
+          <option value="">All activity types</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table activity-table">
+          <thead>
+            <tr>
+              <th scope="col">Activity ID</th>
+              <th scope="col">Filename</th>
+              <th scope="col">Activity type</th>
+              <th scope="col">Date and time</th>
+              <th scope="col">Status</th>
+              <th scope="col">Technical details</th>
+            </tr>
+          </thead>
+          <tbody id="activity-body">
+            <tr><td colspan="6" class="muted">Loading activity records…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination-controls">
+        <button id="activity-previous" class="button button-secondary" type="button" disabled>Previous</button>
+        <span id="activity-page-label" aria-live="polite">Page 1</span>
+        <button id="activity-next" class="button button-secondary" type="button" disabled>Next</button>
+      </div>
+    </section>
+
+    <details class="panel profile-panel">
+      <summary>Account profile</summary>
+      <label for="profile-username">Username (used for account recovery)</label>
+      <input id="profile-username" readonly>
+      <form id="profile-form" class="profile-form">
+        <label for="profile-name">Full name</label>
+        <input id="profile-name" name="fullName" required maxlength="150">
+        <label for="profile-email">Email</label>
+        <input id="profile-email" name="email" type="email" required maxlength="255">
+        <button class="button" type="submit">Save profile</button>
+      </form>
+      <p id="profile-message" class="message" aria-live="polite"></p>
+    </details>
+  </main>
+</body>
+</html>

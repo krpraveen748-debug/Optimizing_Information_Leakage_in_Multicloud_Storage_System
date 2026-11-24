@@ -1,0 +1,70 @@
+package com.praveen.multicloud.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(
+        name = "chunk_metadata",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_chunk_metadata_hash",
+                columnNames = "chunk_hash"),
+        indexes = @Index(name = "idx_chunk_metadata_size", columnList = "chunk_size"))
+public class ChunkMetadataEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Size(min = 64, max = 64)
+    @Column(name = "chunk_hash", nullable = false, length = 64, columnDefinition = "CHAR(64)")
+    private String chunkHash;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "chunk_size", nullable = false)
+    private Integer chunkSize;
+
+    @Size(max = 4096)
+    @Column(name = "similarity_signature", length = 4096)
+    private String similaritySignature;
+
+    @NotNull
+    @Positive
+    @Column(name = "reference_count", nullable = false)
+    private Long referenceCount = 1L;
+
+    @NotNull
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "chunkMetadata")
+    private List<FileChunkEntity> fileChunks = new ArrayList<>();
+
+    @PrePersist
+    void setCreationTimestamp() {
+        if (createdAt == null) createdAt = LocalDateTime.now();
+    }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getChunkHash() { return chunkHash; }
+    public void setChunkHash(String chunkHash) { this.chunkHash = chunkHash; }
+    public Integer getChunkSize() { return chunkSize; }
+    public void setChunkSize(Integer chunkSize) { this.chunkSize = chunkSize; }
+    public String getSimilaritySignature() { return similaritySignature; }
+    public void setSimilaritySignature(String similaritySignature) { this.similaritySignature = similaritySignature; }
+    public Long getReferenceCount() { return referenceCount; }
+    public void setReferenceCount(Long referenceCount) { this.referenceCount = referenceCount; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public List<FileChunkEntity> getFileChunks() { return fileChunks; }
+}

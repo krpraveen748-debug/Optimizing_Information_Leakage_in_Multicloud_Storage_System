@@ -1,0 +1,5 @@
+.env
+target/
+storage/
+app.log
+.vscode/

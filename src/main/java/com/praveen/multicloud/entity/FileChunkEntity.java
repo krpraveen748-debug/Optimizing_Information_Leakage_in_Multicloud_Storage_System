@@ -1,0 +1,114 @@
+package com.praveen.multicloud.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(
+        name = "file_chunks",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_file_chunks_file_number",
+                columnNames = {"file_id", "chunk_number"}),
+        indexes = {
+                @Index(name = "idx_file_chunks_hash", columnList = "chunk_hash"),
+                @Index(name = "idx_file_chunks_provider", columnList = "cloud_provider_id")
+        })
+public class FileChunkEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "file_id", nullable = false, foreignKey = @ForeignKey(name = "fk_file_chunks_file"))
+    private FileEntity file;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "chunk_number", nullable = false)
+    private Integer chunkNumber;
+
+    @NotBlank
+    @Size(min = 64, max = 64)
+    @Column(name = "chunk_hash", nullable = false, length = 64, columnDefinition = "CHAR(64)")
+    private String chunkHash;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "chunk_size", nullable = false)
+    private Integer chunkSize;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "cloud_provider_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_file_chunks_provider"))
+    private CloudProviderEntity cloudProvider;
+
+    @NotBlank
+    @Size(max = 500)
+    @Column(name = "storage_path", nullable = false, length = 500)
+    private String storagePath;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "encryption_status", nullable = false, length = 24)
+    private EncryptionStatus encryptionStatus = EncryptionStatus.NOT_ENCRYPTED;
+
+    @Size(max = 24)
+    @Column(name = "encryption_iv", length = 24)
+    private String encryptionIv;
+
+    @Size(max = 64)
+    @Column(name = "encryption_key_id", length = 64)
+    private String encryptionKeyId;
+
+    @NotNull
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "chunk_hash",
+            referencedColumnName = "chunk_hash",
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(name = "fk_file_chunks_metadata"))
+    private ChunkMetadataEntity chunkMetadata;
+
+    @PrePersist
+    void setCreationTimestamp() {
+        if (createdAt == null) createdAt = LocalDateTime.now();
+    }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public FileEntity getFile() { return file; }
+    public void setFile(FileEntity file) { this.file = file; }
+    public Integer getChunkNumber() { return chunkNumber; }
+    public void setChunkNumber(Integer chunkNumber) { this.chunkNumber = chunkNumber; }
+    public String getChunkHash() { return chunkHash; }
+    public void setChunkHash(String chunkHash) { this.chunkHash = chunkHash; }
+    public Integer getChunkSize() { return chunkSize; }
+    public void setChunkSize(Integer chunkSize) { this.chunkSize = chunkSize; }
+    public CloudProviderEntity getCloudProvider() { return cloudProvider; }
+    public void setCloudProvider(CloudProviderEntity cloudProvider) { this.cloudProvider = cloudProvider; }
+    public String getStoragePath() { return storagePath; }
+    public void setStoragePath(String storagePath) { this.storagePath = storagePath; }
+    public EncryptionStatus getEncryptionStatus() { return encryptionStatus; }
+    public void setEncryptionStatus(EncryptionStatus encryptionStatus) { this.encryptionStatus = encryptionStatus; }
+    public String getEncryptionIv() { return encryptionIv; }
+    public void setEncryptionIv(String encryptionIv) { this.encryptionIv = encryptionIv; }
+    public String getEncryptionKeyId() { return encryptionKeyId; }
+    public void setEncryptionKeyId(String encryptionKeyId) { this.encryptionKeyId = encryptionKeyId; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public ChunkMetadataEntity getChunkMetadata() { return chunkMetadata; }
+    public void setChunkMetadata(ChunkMetadataEntity chunkMetadata) { this.chunkMetadata = chunkMetadata; }
+}

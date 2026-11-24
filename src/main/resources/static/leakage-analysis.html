@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Provider leakage analysis · CloudVault</title>
+  <link rel="stylesheet" href="/css/auth.css">
+  <script src="/js/leakage.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/main.html">CloudVault</a>
+    <nav>
+      <span id="admin-account-label" class="account-label"></span>
+      <a href="/admin.html">Administration</a>
+      <a href="/main.html">User Main</a>
+      <button id="admin-logout-button" class="nav-button" type="button">Sign out</button>
+    </nav>
+  </header>
+  <main class="dashboard">
+    <section class="page-heading">
+      <p class="eyebrow">Administrator</p>
+      <h1>Provider overlap analysis</h1>
+      <p class="muted">Exact Jaccard overlap measures shared distinct chunk fingerprints; it is not a measure of every form of information leakage.</p>
+    </section>
+    <p id="leakage-message" class="message" aria-live="polite"></p>
+    <section class="panel">
+      <div class="admin-actions">
+        <button id="run-leakage-analysis" class="button" type="button">Run analysis</button>
+        <span class="stat-detail">High-similarity pairs are marked using the configured threshold.</span>
+      </div>
+      <div class="stats">
+        <article class="stat"><span>Overall overlap indicator</span><strong id="overall-overlap">—</strong></article>
+        <article class="stat"><span>High-similarity pairs</span><strong id="high-pairs">—</strong></article>
+        <article class="stat"><span>Threshold</span><strong id="analysis-threshold">—</strong></article>
+      </div>
+      <p id="analysis-explanation" class="muted">No analysis has been run yet.</p>
+    </section>
+    <section class="panel">
+      <h2>Provider pair comparisons</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Provider pair</th>
+              <th>Distinct fingerprints</th>
+              <th>Shared</th>
+              <th>Union</th>
+              <th>Exact Jaccard</th>
+              <th>Shared of union</th>
+              <th>Threshold result</th>
+            </tr>
+          </thead>
+          <tbody id="provider-pairs">
+            <tr><td colspan="7">No provider comparison data available.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Analysis history</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Run time</th>
+              <th>Overall overlap</th>
+              <th>Comparable pairs</th>
+              <th>High-similarity pairs</th>
+              <th>Threshold</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="analysis-history">
+            <tr><td colspan="6">No analysis history available.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

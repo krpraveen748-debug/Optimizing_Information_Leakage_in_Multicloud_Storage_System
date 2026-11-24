@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Main · CloudVault</title>
+  <link rel="stylesheet" href="/css/auth.css">
+  <script src="/js/auth.js" defer></script>
+</head>
+<body class="main-page">
+  <header class="site-header">
+    <a class="brand" href="/main.html">CloudVault</a>
+    <nav class="user-nav" aria-label="Main navigation">
+      <a href="/main.html" aria-current="page">Main</a>
+      <a href="/activity.html">My Activity</a>
+      <span id="account-label" class="account-label"></span>
+      <button id="logout-button" class="nav-button" type="button">Sign out</button>
+    </nav>
+  </header>
+
+  <main class="main-workflow">
+    <section class="page-heading">
+      <p class="eyebrow">Secure file workspace</p>
+      <h1>Main</h1>
+      <p class="muted">Upload and process a file, analyze its similarity, then review its actual storage placement.</p>
+    </section>
+    <p id="main-message" class="message" aria-live="polite"></p>
+
+    <section class="panel workflow-section" id="upload-section">
+      <p class="step-label">Step 1</p>
+      <h2>File Upload</h2>
+      <p class="muted">Upload one file at a time. Files are validated and processed by the server before success is reported.</p>
+      <form id="upload-form">
+        <div id="file-dropzone" class="dropzone">
+          <strong>Drag and drop a file here</strong>
+          <span>or choose a file from your device</span>
+          <label for="file">Browse file
+            <input id="file" name="file" type="file" required>
+          </label>
+        </div>
+        <div id="selected-file-details" class="file-selection" hidden>
+          <strong id="selected-file-name"></strong>
+          <span>Type: <span id="selected-file-type"></span></span>
+          <span>Size: <span id="selected-file-size"></span></span>
+        </div>
+        <label for="upload-placement-strategy">Placement strategy for this upload</label>
+        <select id="upload-placement-strategy" name="strategy">
+          <option value="LEAKAGE_AWARE">Leakage-aware</option>
+          <option value="ROUND_ROBIN">Round-robin</option>
+          <option value="RANDOM">Random (seeded)</option>
+        </select>
+        <button id="upload-button" class="button" type="submit">Upload securely</button>
+      </form>
+      <div id="upload-progress-wrap" class="progress-wrap" hidden>
+        <label for="upload-progress">Upload transfer progress</label>
+        <progress id="upload-progress" max="100" value="0"></progress>
+        <span id="upload-progress-label" aria-live="polite"></span>
+      </div>
+      <p id="upload-message" class="message" aria-live="polite"></p>
+    </section>
+
+    <section class="panel workflow-section" id="processing-section">
+      <p class="step-label">Step 2</p>
+      <h2>File Processing</h2>
+      <p class="muted">Stages are marked complete only after the backend confirms a successful upload.</p>
+      <ol id="processing-stages" class="processing-list">
+        <li data-stage="validation"><span>File validation</span><strong>Waiting for upload</strong></li>
+        <li data-stage="chunking"><span>Chunk generation</span><strong>Waiting for upload</strong></li>
+        <li data-stage="hashing"><span>SHA-256 hashing</span><strong>Waiting for upload</strong></li>
+        <li data-stage="encryption"><span>AES-GCM encryption</span><strong>Waiting for upload</strong></li>
+        <li data-stage="deduplication"><span>Chunk deduplication</span><strong>Waiting for upload</strong></li>
+      </ol>
+    </section>
+
+    <section class="panel workflow-section" id="similarity-section">
+      <p class="step-label">Step 3</p>
+      <h2>Similarity Analysis</h2>
+      <p class="muted">Choose two different uploaded files. MinHash is an estimate; matching chunk count is exact for the stored chunk fingerprints.</p>
+      <form id="similarity-form">
+        <label for="similarity-file">File to analyze</label>
+        <select id="similarity-file" name="fileId" required></select>
+        <div id="selected-file-actions" class="file-actions" hidden>
+          <a id="download-selected-file" class="button button-secondary" href="#">Download selected file</a>
+          <button id="delete-selected-file" class="button button-danger" type="button">Delete selected file</button>
+        </div>
+        <p id="selected-file-message" class="message" aria-live="polite"></p>
+        <label for="similarity-candidate">Compare with</label>
+        <select id="similarity-candidate" name="candidateFileId" required></select>
+        <button class="button button-secondary" type="submit" disabled>Analyze similarity</button>
+      </form>
+      <p id="similarity-message" class="message" aria-live="polite">Upload at least two files to run a comparison.</p>
+      <div id="similarity-results" class="result-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="panel workflow-section" id="placement-section" hidden>
+      <p class="step-label">Step 4</p>
+      <h2>Storage Placement</h2>
+      <p class="muted">The backend placement runs during upload. This section shows the persisted allocation for the analyzed file.</p>
+      <p id="placement-status" class="status-line"></p>
+      <div id="placement-results" class="provider-grid" aria-live="polite"></div>
+      <div id="chunk-allocation" class="table-wrap"></div>
+    </section>
+
+    <section class="panel workflow-section" id="final-results-section" hidden>
+      <p class="step-label">Step 5</p>
+      <h2>Final Results</h2>
+      <dl id="final-results" class="final-results"></dl>
+    </section>
+  </main>
+</body>
+</html>

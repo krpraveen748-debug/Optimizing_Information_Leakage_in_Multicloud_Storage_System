@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Forgot email · CloudVault</title>
+  <link rel="stylesheet" href="/css/auth.css">
+  <script src="/js/auth.js" defer></script>
+  <script src="/js/recovery.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">CloudVault</a>
+    <nav><a href="/login.html">Sign in</a></nav>
+  </header>
+  <main class="narrow">
+    <section class="panel">
+      <p class="eyebrow">Account recovery</p>
+      <h1>Forgot email</h1>
+      <p class="muted">Verify your username first, then confirm the registered email and account password.</p>
+      <div id="email-username-step">
+        <form id="email-username-form">
+          <label for="recovery-username">Username</label>
+          <input id="recovery-username" name="username" required maxlength="50" autocomplete="username">
+          <button class="button full-width" type="submit">Continue</button>
+        </form>
+      </div>
+      <div id="email-verification-step" hidden>
+        <form id="email-verification-form">
+          <label for="recovery-email">Registered email</label>
+          <input id="recovery-email" name="email" type="email" required maxlength="255" autocomplete="email">
+          <label for="recovery-password">Account password</label>
+          <input id="recovery-password" name="password" type="password" required autocomplete="current-password">
+          <button class="button full-width" type="submit">Verify identity</button>
+        </form>
+      </div>
+      <p id="email-recovery-message" class="message" aria-live="polite"></p>
+      <p id="recovered-email" class="recovery-result" hidden></p>
+      <p class="muted"><a href="/login.html">Back to sign in</a></p>
+    </section>
+  </main>
+</body>
+</html>

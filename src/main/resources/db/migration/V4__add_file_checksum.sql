@@ -1,0 +1,2 @@
+ALTER TABLE files
+  ADD COLUMN file_sha256 VARCHAR(64) NULL;

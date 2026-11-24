@@ -1,0 +1,2 @@
+-- Deprecated. Flyway migrations in db/migration now own schema creation and upgrades.
+-- Do not run the former JDBC-only schema script manually.
